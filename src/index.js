@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './containers/app';
+import './index.css'
+import App from './App';
 
-ReactDOM.render( <App appName = "Person Manager"/>, document.getElementById('root'));
+ReactDOM.render( <App />, document.getElementById('root'));
