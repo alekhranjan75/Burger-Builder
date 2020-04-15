@@ -21,6 +21,12 @@ class BurgerIngredients extends Component {
         case ('cheese') :
             ingredients = <div className = {styles.Cheese}></div>
             break;
+        case ('tomato') :
+            ingredients = <div className = {styles.Tomato}></div>
+            break;
+        case ('cream') :
+            ingredients = <div className = {styles.Cream}></div>
+            break;
         case ('salad') :
             ingredients = <div className = {styles.Salad}></div>
             break;

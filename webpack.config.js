@@ -46,7 +46,15 @@ module.exports = {
                         }
                     }
                 ],
-            }]
+            },
+            {
+                //for any image file
+                test: /\.(jpg|png)$/,
+                use: {
+                    loader: 'url-loader',
+                },
+            },
+        ]
         },
         // add a custom index.html as the template
         plugins: [new HtmlWebpackPlugin({

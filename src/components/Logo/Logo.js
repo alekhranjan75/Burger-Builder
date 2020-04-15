@@ -1,0 +1,10 @@
+import React, { Component } from 'react'
+import burgerLogo from '../../assets/images/burgerLogo.png'
+import styles from './Logo.module.css'
+const logo = (props) => (
+    <div className = {styles.Logo} style ={{height: props.height}}>
+        <img src = {burgerLogo} alt = "Burger"/>
+    </div>
+)
+
+export default logo;
