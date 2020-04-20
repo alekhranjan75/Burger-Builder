@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import Aux from '../../hoc/Aux'
 import Burger from '../../components/Burger/Burger'
 import BurgerControls from '../../components/Burger/BuildControls/BuildControls'
@@ -9,6 +8,8 @@ import OrderSummary from '../../components/Burger/BurgerSummary/BurgerSummary'
 import axios from '../../axios-order'
 import Spinner from '../../components/UI/Spinner/Spinner'
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler'
+import { Route, Switch } from 'react-router-dom'
+import Checkout from '../Checkout/Checkout'
 
 const INGREDIENTS_PRICE = {
     cream: 20,
@@ -67,6 +68,8 @@ class BurgerBuilder extends Component {
     }
 
     purchased  = () => {
+        // console.log("The props",this.props)
+        // this.props.history.push({pathname: '/checkout'})
         this.setState({
             purchased: true
         })
@@ -116,28 +119,16 @@ class BurgerBuilder extends Component {
         this.setState({
             loading: true
         })
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.price,
-            customer: {
-                name: 'X1',
-                address: {
-                    street: 'street 1',
-                    zipcode: '012345',
-                    country: 'India'
-                },
-                email: 'xyz@abc.com'
-            },
-            deliveryMethod: 'Fastest'
+        const queryParams = [];
+        for (let i in this.state.ingredients) {
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
         }
-        // console.log(order)
-        axios.post('/orders.json', order)
-        .then(res => {
-            this.setState({loading: false, purchased: false})
-        })
-        .catch(err => {
-            this.setState({loading: false, purchased: false})
-        })
+        queryParams.push('price=' + this.state.burgerPrice)
+        const queryString = queryParams.join('&');
+        this.props.history.push({
+            pathname: '/checkout',
+            search: '?' + queryString
+        });
     }
     render() {
         
@@ -173,7 +164,7 @@ class BurgerBuilder extends Component {
                 <Modal show = {this.state.purchased} cancel = {this.purchaseCancelHandler}>
                     {orderSummary}
                 </Modal>
-                {burger}                
+                {burger}  
             </Aux>
         )
     }
