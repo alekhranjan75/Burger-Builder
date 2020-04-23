@@ -6,6 +6,8 @@ import axios from '../../../axios-order'
 import Spinner from '../../../components/UI/Spinner/Spinner'
 import Input from '../../../components/UI/Input/Input'
 import { connect } from 'react-redux'
+import { orderSubmission } from '../../../store/action/actionOrder'
+// import { orderSubmission } from '../../../store/action/actionBurgerBuilder'
 class ContactData extends Component {
     state = {
         orderForm: {
@@ -88,7 +90,6 @@ class ContactData extends Component {
                 validity: true
             }
         },
-        loading: false,
         formIsValid: false
     }
     
@@ -102,24 +103,14 @@ class ContactData extends Component {
         for(let data in this.state.orderForm) {
             orderDetails[data] = this.state.orderForm[data].value;
         }
-        console.log("Price of burger:",this.props.price)
+        // console.log("Price of burger:",this.props.price)
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.price,
             orderData: orderDetails
         }
-        axios.post('/orders.json', order)
-            .then(response => {
-                this.setState({
-                    loading: false
-                });
-                this.props.history.push('/');
-            })
-            .catch(error => {
-                this.setState({
-                    loading: false
-                });
-            });
+        this.props.orderSubmission(order)
+        
     }
     validityCheck = (value, rules) => {
         let isValid = true
@@ -186,7 +177,7 @@ class ContactData extends Component {
                 <Button btnType = "Success" disabled = {!this.state.formIsValid} >Order</Button>
             </form>
             )
-        if (this.state.loading) {
+        if (this.props.loading) {
             form = < Spinner />
         }
         return (
@@ -201,8 +192,14 @@ class ContactData extends Component {
 }
 const mapStateToProps = state => {
     return {
-        ingredients: state.ingredients,
-        price: state.burgerPrice
+        ingredients: state.burger.ingredients,
+        price: state.burger.burgerPrice,
+        loading: state.order.loading
     }
 }
-export default connect(mapStateToProps)(ContactData);
+const mapDispatchToProps = dispatch => {
+    return {
+        orderSubmission: (order) => dispatch(orderSubmission(order))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ContactData);

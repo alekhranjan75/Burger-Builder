@@ -1,13 +1,9 @@
-import * as actionTypes from "./action";
+import * as actionTypes from "../action/actionBurgerBuilder";
 
 const initialState = {
-    ingredients: {
-        cream: 0,
-        salad: 0,
-        cheese: 0,
-        tomato: 0
-    },
-    burgerPrice: 0
+    ingredients: null,
+    burgerPrice: 0,
+    error: false
 }
 const INGREDIENTS_PRICE = {
     cream: 20,
@@ -16,7 +12,7 @@ const INGREDIENTS_PRICE = {
     tomato: 5
 }
 
-const reducer = (state = initialState, action) => {
+const reducerBurgerBuilder = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.ADD_INGREDIENT:
             return {
@@ -40,11 +36,22 @@ const reducer = (state = initialState, action) => {
             } else {
                 return state
             }
-
+        case actionTypes.SET_INGREDIENT:
+            return {
+                ...state,
+                ingredients : action.ingredients,
+                burgerPrice: 0,
+                error: false
+            }
+        case actionTypes.FAILED_FECTH_INGREDIENT:
+            return {
+                ...state,
+                error: true
+            }
             
         default:
             return state
     }
 }
 
-export default reducer;
+export default reducerBurgerBuilder;
