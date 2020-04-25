@@ -7,7 +7,7 @@ import Spinner from '../../../components/UI/Spinner/Spinner'
 import Input from '../../../components/UI/Input/Input'
 import { connect } from 'react-redux'
 import { orderSubmission } from '../../../store/action/actionOrder'
-// import { orderSubmission } from '../../../store/action/actionBurgerBuilder'
+
 class ContactData extends Component {
     state = {
         orderForm: {
@@ -107,9 +107,10 @@ class ContactData extends Component {
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.price,
-            orderData: orderDetails
+            orderData: orderDetails,
+            userId: this.props.userId
         }
-        this.props.orderSubmission(order)
+        this.props.orderSubmission(this.props.token, order)
         
     }
     validityCheck = (value, rules) => {
@@ -157,10 +158,6 @@ class ContactData extends Component {
         let form = (
             <form onSubmit = {this.orderHandler}>
                 {formElements.map(ele => {
-                    // console.log("id",ele.id)
-                    // console.log("inputtype", ele.properties.elementType)
-                    // console.log("placeholder", ele.properties.elementProp.placeholder)
-                    // console.log("value", ele.properties.value)
                     return(
                         <Input 
                             key = {ele.id}
@@ -173,7 +170,6 @@ class ContactData extends Component {
                             changed = {(event) =>this.changedHandler(event, ele.id)}/>
                     )
                 })}
-                {/* <Input inputtype = 'input' type = 'text' name= 'zipcode' placeholder= 'zipcode' /> */}
                 <Button btnType = "Success" disabled = {!this.state.formIsValid} >Order</Button>
             </form>
             )
@@ -194,12 +190,14 @@ const mapStateToProps = state => {
     return {
         ingredients: state.burger.ingredients,
         price: state.burger.burgerPrice,
-        loading: state.order.loading
+        loading: state.order.loading,
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-        orderSubmission: (order) => dispatch(orderSubmission(order))
+        orderSubmission: (token, order) => dispatch(orderSubmission(token, order))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ContactData);

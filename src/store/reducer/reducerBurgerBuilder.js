@@ -3,7 +3,8 @@ import * as actionTypes from "../action/actionBurgerBuilder";
 const initialState = {
     ingredients: null,
     burgerPrice: 0,
-    error: false
+    error: false,
+    building: false
 }
 const INGREDIENTS_PRICE = {
     cream: 20,
@@ -21,7 +22,8 @@ const reducerBurgerBuilder = (state = initialState, action) => {
                     ...state.ingredients,
                     [action.ingredientType]: state.ingredients[action.ingredientType] + 1
                 },
-                burgerPrice: state.burgerPrice + INGREDIENTS_PRICE[action.ingredientType]
+                burgerPrice: state.burgerPrice + INGREDIENTS_PRICE[action.ingredientType],
+                building: true
             }
         case actionTypes.REMOVE_INGREDIENT:
             if (state.ingredients[action.ingredientType]) {
@@ -31,7 +33,8 @@ const reducerBurgerBuilder = (state = initialState, action) => {
                         ...state.ingredients,
                         [action.ingredientType]: state.ingredients[action.ingredientType] - 1
                     },
-                    burgerPrice: state.burgerPrice - INGREDIENTS_PRICE[action.ingredientType]
+                    burgerPrice: state.burgerPrice - INGREDIENTS_PRICE[action.ingredientType],
+                    building: true,
                 }
             } else {
                 return state
@@ -41,7 +44,8 @@ const reducerBurgerBuilder = (state = initialState, action) => {
                 ...state,
                 ingredients : action.ingredients,
                 burgerPrice: 0,
-                error: false
+                error: false,
+                building: false
             }
         case actionTypes.FAILED_FECTH_INGREDIENT:
             return {

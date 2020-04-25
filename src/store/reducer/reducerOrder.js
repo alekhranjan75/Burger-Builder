@@ -34,7 +34,7 @@ const reducerOrder = (state = initialState, action) => {
                 ...state,
                 order: action.orders
             }
-        case actionTypes.FETCH_SUCCESS:
+        case actionTypes.FETCH_FAIL:
             return {
                 ...state
             }

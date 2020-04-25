@@ -6,10 +6,10 @@ import { connect } from 'react-redux';
 import { initPurchase } from '../../store/action/actionOrder';
 
 class Checkout extends Component {
-    componentDidUpdate() {
-        console.log("[Checkout], ComponentDidUpdate")
-        this.props.initPurchase
-    }
+    // componentDidUpdate() {
+    //     console.log("[Checkout], ComponentDidUpdate")
+    //     this.props.initPurchase()
+    // }
     cancel = () => {
         // console.log("Cancel")
         // this.props.history.replace({pathname: '/'})

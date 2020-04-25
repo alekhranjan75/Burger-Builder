@@ -1,10 +1,13 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styles from './NavigationItems.module.css'
 import NavigaionItem from './NavigationItem/NavigationItem'
-const navigaionItems = () => (
+const navigaionItems = (props) => (
     <ul className = {styles.NavigationItems}>
         <NavigaionItem link = "/"  exact>BurgerBuilder</NavigaionItem>
-        <NavigaionItem link = "/orders" >Orders</NavigaionItem>
+        {props.isAuth ? <NavigaionItem link = "/orders" >Orders</NavigaionItem>: null}
+        {props.isAuth ?
+            <NavigaionItem link = "/logout" >Logout</NavigaionItem> :
+            <NavigaionItem link = "/auth" >Authenticate</NavigaionItem>}
     </ul>
 );
 

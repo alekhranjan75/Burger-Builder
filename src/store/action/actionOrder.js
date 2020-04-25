@@ -21,9 +21,9 @@ export const submissionSuccess = (order, id) => {
         orderId: id
     }
 }
-export const orderSubmission = (order) => {
+export const orderSubmission = (token, order) => {
     return dispatch => {
-        axios.post('/orders.json', order)
+        axios.post('/orders.json?auth=' + token, order)
             .then(response => {
                 dispatch(submissionSuccess(order, response.data.name))
             })
@@ -49,9 +49,10 @@ export const fetchFail = () => {
         type: FETCH_FAIL
     }
 }
-export const fetchOrder = () => {
+export const fetchOrder = (token, userId) => {
     return dispatch => {
-        axios.get('/orders.json')
+        const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
+        axios.get('/orders.json' + queryParams)
         .then(res => {
             // console.log(res.data)
             const fetchedData = []

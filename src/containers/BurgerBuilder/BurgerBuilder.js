@@ -22,8 +22,10 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount() {
-        // console.log('invoked componentDidMount')
-        this.props.initIngredient()
+        if(!this.props.building) {
+            this.props.initIngredient()
+        }
+        
     }
     purchaseState = (ingredients) => {
         // console.log("Invoked purchaseState func")
@@ -34,11 +36,13 @@ class BurgerBuilder extends Component {
     }
 
     purchased  = () => {
-        // console.log("The props",this.props)
-        // this.props.history.push({pathname: '/checkout'})
-        this.setState({
-            purchased: true
-        })
+        if(this.props.isAuthenticated) {
+            this.setState({
+                purchased: true
+            })
+        } else {
+            this.props.history.push('/auth')
+        } 
     }
     purchaseCancelHandler = () => {
         this.setState({
@@ -61,6 +65,7 @@ class BurgerBuilder extends Component {
                         price = {this.props.burgerPrice} 
                         purchaseable = {this.purchaseState(this.props.ingredients)}
                         purchasing = {this.purchased}
+                        isAuth = {this.props.isAuthenticated}
                         ingredients = {this.props.ingredients}                     
                     />
                 
@@ -92,7 +97,9 @@ const mapStateToProps = state => {
     return {
         ingredients: state.burger.ingredients,
         burgerPrice: state.burger.burgerPrice,
-        error: state.burger.error
+        error: state.burger.error,
+        building: state.burger.building,
+        isAuthenticated: state.auth.token !== null
     }
 }
 const mapDispatchToProps = dispatch => {
