@@ -1,14 +1,15 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React, { Component, Suspense } from 'react'
 import Layout from './components/Layout/Layout'
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder'
 import {BrowserRouter, Switch, Route, Link, Redirect} from 'react-router-dom'
-import Checkout from './containers/Checkout/Checkout'
-import Orders from './containers/Orders/Orders'
-import Auth from './containers/Auth/Auth'
-import Logout from './containers/Auth/Logout/Logout'
 import { connect } from 'react-redux'
 import { checkAuthentication } from './store/action/actionAuth'
+import Spinner from './components/UI/Spinner/Spinner'
+
+const Auth = React.lazy(()=> import('./containers/Auth/Auth'))
+const Logout = React.lazy(() => import('./containers/Auth/Logout/Logout'))
+const Checkout = React.lazy(() => import('./containers/Checkout/Checkout'))
+const Orders = React.lazy(() => import('./containers/Orders/Orders'))
 
 class App extends Component {
     componentDidMount() {
@@ -17,7 +18,7 @@ class App extends Component {
     render() {
         let routes = (
       <Switch>
-        <Route path="/auth" component={Auth} />
+        <Route path="/auth" component={Auth} />      
         <Route path="/" exact component={BurgerBuilder} />
         <Redirect to="/" />
       </Switch>
@@ -26,16 +27,17 @@ class App extends Component {
     if ( this.props.isAuthenticated ) {
       routes = (
         <Switch>
-          <Route path="/checkout" component={Checkout} />
-          <Route path="/orders" component={Orders} />
-          <Route path="/logout" component={Logout} />
-          <Route path="/auth" component={Auth} />
-          <Route path="/" exact component={BurgerBuilder} />
+            <Route path="/checkout" component={Checkout} />
+            <Route path="/auth" component={Auth} />
+            <Route path="/orders" component={Orders} />
+            <Route path="/logout" component={Logout} />
+            <Route path="/" exact component={BurgerBuilder} />
           <Redirect to="/" />
         </Switch>
       )
     }
         return (
+          <Suspense fallback = {<Spinner />}>
             <BrowserRouter>
                 <div>
                 <Layout>
@@ -43,6 +45,7 @@ class App extends Component {
                 </Layout>
                 </div>
             </BrowserRouter>  
+          </Suspense>
         )
     }
 }
