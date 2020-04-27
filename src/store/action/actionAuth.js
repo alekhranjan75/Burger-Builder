@@ -3,6 +3,7 @@ import axios from "axios"
 export const AUTH_SUCCESS = 'AUTH_SUCCESS'
 export const AUTH_FAIL = 'AUTH_FAIL'
 export const AUTH_START = 'AUTH_START'
+export const AUTH_INITIATE_LOGOUT = 'AUTH_INITIATE_LOGOUT'
 export const AUTH_LOGOUT = 'AUTH_LOGOUT'
 
  const authSuccess = (token, userId) => {
@@ -25,11 +26,11 @@ const authStart = () => {
     }
 }
 export const authLogout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('expirationDate')
-    localStorage.removeItem('userId')
+    // localStorage.removeItem('token')
+    // localStorage.removeItem('expirationDate')
+    // localStorage.removeItem('userId')
     return {
-        type: AUTH_LOGOUT
+        type: AUTH_INITIATE_LOGOUT
     }
 }
 export const logout = (expirationTime) => {
