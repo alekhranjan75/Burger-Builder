@@ -7,7 +7,7 @@ import { setIngredients, fetchIngredientFailed } from "../action/actionBurgerBui
 export function* fetchIngredientSaga(action) {
     try {
         const response = yield axios.get('/ingredients.json')
-        console.log(response.data)
+        // console.log(response.data)
         yield put(setIngredients(response.data))
     } catch (error) {
         yield put(fetchIngredientFailed())

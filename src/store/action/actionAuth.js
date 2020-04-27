@@ -16,7 +16,7 @@ export const logoutAction = () => {
     }
 }
 export const logoutCheckTimeout = (expirationTime) => {
-    console.log("Invoking [logoutCheckTimeout]")
+    // console.log("Invoking [logoutCheckTimeout]")
     return {
         type: AUTH_CHECK_TIMEOUT,
         expirationTime: expirationTime

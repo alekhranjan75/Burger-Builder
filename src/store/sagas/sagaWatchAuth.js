@@ -1,5 +1,6 @@
 import {
-    takeEvery
+    takeEvery,
+    all
 } from "redux-saga/effects"
 import { logoutSaga, logoutCheckTimeoutSaga, authUserSaga, checkAuthenticationSaga } from "./sagaAuth"
 import {
@@ -12,8 +13,10 @@ import {
 /* the 'watcher'--- Starts logoutSaga on each dispatched `AUTH_INITIATE_LOGOUT`action. */
 
 export function* watchAuth() {
-    yield takeEvery(AUTH_INITIATE_LOGOUT, logoutSaga)
-    yield takeEvery(AUTH_CHECK_TIMEOUT, logoutCheckTimeoutSaga)
-    yield takeEvery(AUTH_USER, authUserSaga)
-    yield takeEvery(AUTH_CHECK, checkAuthenticationSaga)
+    yield all( [
+        takeEvery(AUTH_INITIATE_LOGOUT, logoutSaga),
+        takeEvery(AUTH_CHECK_TIMEOUT, logoutCheckTimeoutSaga),
+        takeEvery(AUTH_USER, authUserSaga),
+        takeEvery(AUTH_CHECK, checkAuthenticationSaga)
+    ])
 }

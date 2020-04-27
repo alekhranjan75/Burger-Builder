@@ -9,6 +9,6 @@ import {
 } from "./sagaBurgerBuilder"
 
 export function* watchBurger() {
-    console.log("[WATCHORDER]")
+    // console.log("[WATCHORDER]")
     yield takeEvery(INIT_INGREDIENT, fetchIngredientSaga)
 }
