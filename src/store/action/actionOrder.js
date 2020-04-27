@@ -3,10 +3,11 @@ import axios from "../../axios-order"
 export const ORDER_SUCCESS = 'ORDER_SUCCESS'
 export const ORDER_FAIL = 'ORDER_FAIL'
 export const INIT_PURCHASE = 'INIT_PURCHASE'
+export const SUBMIT_ORDER = 'SUBMIT_ORDER'
 
 export const FETCH_SUCCESS = 'FETCH_SUCCESS'
 export const FETCH_FAIL = 'FETCH_FAIL'
-
+export const FETCH_ORDER = 'FETCH_ORDER'
 
 export const submissionFail  = () => {
     return {
@@ -22,14 +23,10 @@ export const submissionSuccess = (order, id) => {
     }
 }
 export const orderSubmission = (token, order) => {
-    return dispatch => {
-        axios.post('/orders.json?auth=' + token, order)
-            .then(response => {
-                dispatch(submissionSuccess(order, response.data.name))
-            })
-            .catch(error => {
-                dispatch(submissionFail())
-            });
+    return {
+        type: SUBMIT_ORDER,
+        token: token,
+        order: order
     }
 }
 export const initPurchase = () => {
@@ -50,22 +47,9 @@ export const fetchFail = () => {
     }
 }
 export const fetchOrder = (token, userId) => {
-    return dispatch => {
-        const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
-        axios.get('/orders.json' + queryParams)
-        .then(res => {
-            // console.log(res.data)
-            const fetchedData = []
-            for(let key in res.data) {
-                fetchedData.push ({
-                    ...res.data[key],
-                    id: key
-                })
-            }
-            dispatch(fetchSuccess(fetchedData))
-        })
-        .catch(res => {
-            dispatch(fetchFail)
-        });
+    return {
+        type: FETCH_ORDER,
+        token: token,
+        userId:userId
     }
 }

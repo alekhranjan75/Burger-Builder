@@ -5,6 +5,7 @@ export const ADD_INGREDIENT = 'ADD_INGREDIENT'
 export const REMOVE_INGREDIENT = 'REMOVE_INGREDIENT'
 export const SET_INGREDIENT = 'SET_INGREDIENT'
 export const FAILED_FECTH_INGREDIENT = 'FAILED_FECTH_INGREDIENT'
+export const INIT_INGREDIENT = 'INIT_INGREDIENT'
 
 export const addIngredient = (ingName) => {
     return {
@@ -33,14 +34,8 @@ export const fetchIngredientFailed = () => {
 }
 
 export const initIngredients = () => {
-    return dispatch => {
-        axios.get('/ingredients.json')
-        .then(res => {
-            dispatch(setIngredients(res.data))
-        })
-        .catch(err => {
-            dispatch(fetchIngredientFailed())
-        })
+    return {
+        type: INIT_INGREDIENT
     }
 }
 

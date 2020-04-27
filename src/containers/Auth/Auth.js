@@ -136,7 +136,7 @@ class Auth extends Component {
                 rediret = <Redirect to = '/' />
             }
         }
-        console.log("ISAUTHENTICATION", this.props.isAuthenticated)
+        // console.log("ISAUTHENTICATION", this.props.isAuthenticated)
         return (
            <div className = {styles.Auth}>
                {rediret}

@@ -6,7 +6,7 @@ import Backdrop from '../../UI/Backdrop/Backdrop'
 import Aux from '../../../hoc/Aux'
 
 const sideDrawer = (props) => {
-    console.log("Side Drawer working")
+    // console.log("Side Drawer working")
     let attachedClass = [styles.SideDrawer, styles.Close]
     if(props.open) {
         attachedClass = [styles.SideDrawer, styles.Open]

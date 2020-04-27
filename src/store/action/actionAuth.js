@@ -4,27 +4,26 @@ export const AUTH_SUCCESS = 'AUTH_SUCCESS'
 export const AUTH_FAIL = 'AUTH_FAIL'
 export const AUTH_START = 'AUTH_START'
 export const AUTH_INITIATE_LOGOUT = 'AUTH_INITIATE_LOGOUT'
+export const AUTH_CHECK_TIMEOUT = 'AUTH_CHECK_TIMEOUT'
 export const AUTH_LOGOUT = 'AUTH_LOGOUT'
+export const AUTH_USER = 'AUTH_USER'
+export const AUTH_CHECK = 'AUTH_CHECK'
 
- const authSuccess = (token, userId) => {
+//Putting actions here instead of hardcoding it in redux-saga files
+export const logoutAction = () => {
     return {
-        type: AUTH_SUCCESS,
-        token: token,
-        userId: userId
+        type: AUTH_LOGOUT
     }
 }
- const authFail = (error) => {
+export const logoutCheckTimeout = (expirationTime) => {
+    console.log("Invoking [logoutCheckTimeout]")
     return {
-        type: AUTH_FAIL,
-        error: error
-    }
-}
+        type: AUTH_CHECK_TIMEOUT,
+        expirationTime: expirationTime
+    };
+};
 
-const authStart = () => {
-    return {
-        type: AUTH_START
-    }
-}
+//Watch listeners
 export const authLogout = () => {
     // localStorage.removeItem('token')
     // localStorage.removeItem('expirationDate')
@@ -33,14 +32,38 @@ export const authLogout = () => {
         type: AUTH_INITIATE_LOGOUT
     }
 }
-export const logout = (expirationTime) => {
-    return dispatch => {
-        setTimeout(() => {
-            dispatch(authLogout());
-        }, expirationTime * 1000);
-    };
-};
-export const auth = (email, password, isSignUp) => {
+
+export const authSuccess = (token, userId) => {
+    return {
+        type: AUTH_SUCCESS,
+        token: token,
+        userId: userId
+    }
+}
+export const authFail = (error) => {
+    return {
+        type: AUTH_FAIL,
+        error: error
+    }
+}
+
+export const authStart = () => {
+    return {
+        type: AUTH_START
+    }
+}
+
+export const auth = (email, password, isSignup) => {
+    return  {
+        type: AUTH_USER,
+        email: email,
+        password: password,
+        returnSecureToken: true,
+        isSignup: isSignup
+    }
+}
+
+/* export const auth = (email, password, isSignUp) => {
     return dispatch => {
         const authData = {
             email: email,
@@ -60,16 +83,16 @@ export const auth = (email, password, isSignUp) => {
             localStorage.setItem('expirationDate', expirationDate)
             localStorage.setItem('userId', response.data.localId)
             dispatch(authSuccess(response.data.idToken, response.data.localId))
-            dispatch(logout(response.data.expiresIn))
+            dispatch(logoutCheckTimeout(response.data.expiresIn))
         })
         .catch(err => {
             console.log(err.response.data.error.message)
             dispatch(authFail(err.response.data.error.message))
         })
     }
-}
+} */
 
-export const checkAuthentication = () => {
+/* export const checkAuthentication = () => {
     return dispatch => {
         const token = localStorage.getItem('token')
         if(!token) {
@@ -82,8 +105,15 @@ export const checkAuthentication = () => {
             }
             else {
                 dispatch(authSuccess(token, localStorage.getItem('userId')))
-                // dispatch(logout((expirationDate.getTime() - new Date().getTime()) / 1000 ));
+                dispatch(logoutCheckTimeout((expirationDate.getTime() - new Date().getTime()) / 1000));
             } 
         }
+    }
+} */
+
+export const checkAuthentication = () => {
+    
+    return {
+        type: AUTH_CHECK
     }
 }
